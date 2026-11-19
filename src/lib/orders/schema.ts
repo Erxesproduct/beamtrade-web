@@ -1,4 +1,4 @@
-import { business, deliveryFee, type DeliveryId, type PaymentId } from "@/content/business";
+import { business, deliveryFee, giftEarned, type DeliveryId, type PaymentId } from "@/content/business";
 import { getVariant, soldOut, type Product, type Variant } from "@/lib/catalog";
 import { AIMAGS, DISTRICTS } from "./places";
 
@@ -22,6 +22,8 @@ export type Order = {
   subtotal: number;
   deliveryFee: number;
   total: number;
+  /** the shop's mystery box promo applies (gift-promo pack + goods above 50,000₮); staff add the box */
+  gift: boolean;
   /** Honeypot: real visitors never fill it. */
   website: string;
 };
@@ -115,6 +117,7 @@ export function validateOrder(body: unknown): { ok: true; order: Order } | { ok:
       subtotal,
       deliveryFee: fee,
       total: subtotal + fee,
+      gift: giftEarned(subtotal, lines.some((l) => !!l.product.promo)),
       website: str(b.website, 100),
     },
   };

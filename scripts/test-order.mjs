@@ -32,6 +32,10 @@ const cheap = [...ok].sort((a, b) => a.price - b.price)[0];
 const mid = ok.find((v) => v.id !== cheap.id && v.price >= 5000 && v.price + cheap.price <= FREE);
 const big = ok.find((v) => v.price * 10 > FREE);
 const soldout = V.find((v) => v.stock === 0);
+const GIFT = 50000;
+const promo = new Set(catalog.products.filter((p) => p.promo).map((p) => p.slug));
+const giftPack = V.find((v) => promo.has(v.slug) && v.stock !== 0 && v.price <= GIFT && v.price * 2 > GIFT);
+const plain = V.find((v) => !promo.has(v.slug) && v.stock !== 0 && v.price >= 5000 && (Math.floor(GIFT / v.price) + 1) <= 10);
 // bundles with a diaper-size choice: <id>-s | -m | -l | -xl, one shared stock
 const bundle = catalog.products.find((p) => p.variants.length > 1 && p.variants[0].stock != null && p.variants[0].stock < 30);
 const sized = catalog.products.find((p) => p.variants.length > 1)?.variants[1];
@@ -77,6 +81,10 @@ const cases = [
   ...(bundle
     ? [[`bundle sizes share one stock (${bundle.variants[0].stock}): S+M+L × 10 keeps only S+M`, { ...order, items: bundle.variants.slice(0, 3).map((v) => item(v, 10)) }, total(bundle.variants[0].price * 20, 0)]]
     : []),
+  // the shop's mystery box promo: a gift-promo pack and goods above 50,000₮
+  ...(giftPack ? [[`no gift at ${giftPack.price}₮ (gift pack, not above ${GIFT}₮)`, { ...order, items: [item(giftPack, 1)] }, (r) => valid(r) && r.json?.gift === false]] : []),
+  ...(giftPack ? [[`gift above ${GIFT}₮ with a gift pack (BT-${giftPack.id} × 2)`, { ...order, items: [item(giftPack, 2)] }, (r) => valid(r) && r.json?.gift === true]] : []),
+  ...(plain ? [[`no gift above ${GIFT}₮ without a gift pack (BT-${plain.id})`, { ...order, items: [item(plain, Math.floor(GIFT / plain.price) + 1)] }, (r) => valid(r) && r.json?.gift === false]] : []),
   ["district is required", { ...order, area: "" }, rejects("area")],
   ["unknown district is rejected", { ...order, area: "Дархан" }, rejects("area")],
   ["khoroo must be 1–45", { ...order, khoroo: 99 }, rejects("khoroo")],

@@ -14,7 +14,7 @@ There is no erxes instance for Beam trade yet ("erxes 3.0: NOT SET"). Create the
 | [1.2] QPay | done: QPay invoice + status check through the erxes payment plugin | **blocked**: QPay merchant credentials, erxes payment method (1.2) |
 | [1.3] eBarimt | done: person / company choice, registry number validated | **blocked**: PosAPI registration, TIN; receipts are issued by erxes (1.3) |
 | [1.4] Delivery, fees, statuses | done: 6,000₮, free above 40,000₮, 09:00 cut-off, city zones, countryside; status list | delivery products, pipeline stages (1.4) |
-| [1.5] Full journey test | validation verified (31 checks, `npm run test:order`) | **blocked**: a real order needs the env vars and 1.2 / 1.3 (1.5) |
+| [1.5] Full journey test | validation verified (34 checks, `npm run test:order`) | **blocked**: a real order needs the env vars and 1.2 / 1.3 (1.5) |
 
 ---
 
@@ -30,8 +30,10 @@ each (pre-sized WebP on the website), 2 banners, logo, about photo.
 - Bundles whose text says «S,M,L,XL сонголтоор» (Бүрэн, Ээжийн, Нярайн багц) get 4 sellable rows `BT-<id>-s|m|l|xl`:
   same price, **one shared stock** (the website checks the sum).
 - Stock: every product tracks stock on Zochil (17–167).
-- The shop's promo line («50,000-с дээш үнийн дүнд mystery box бэлгэнд очно») is shown word for word on the products
-  that carry it; the website does not add a gift by itself (open question 3).
+- The shop's promo line («50,000-с дээш үнийн дүнд mystery box бэлгэнд очно») is on the 8 Тоди SOLO / DOUBLE packs.
+  The website marks them «Бэлэгтэй», filters them (`/shop?gift=1`), counts down to the gift in the cart and on the
+  product page, and when an order has one of those packs and goods above 50,000₮ it writes
+  «Бэлэг: Mystery box хийж өгөх» on the erxes order. Staff add the box; the website keeps no gift stock (open question 3).
 - Old Zochil URLs (`/products/<category>/<id>`, category pages, `/about`, `/checkout`, …) redirect to the new pages.
 
 Files (made by `npm run export:erxes` from `src/data/catalog.json`):
@@ -111,10 +113,11 @@ erxes:
 
 ## 1.5 Test order from cart to receipt
 
-**Verified on a local production build:** `npm run test:order -- http://127.0.0.1:3471` passes **31 checks** (empty cart, unknown product, quantity limit, the
+**Verified on a local production build:** `npm run test:order -- http://127.0.0.1:3471` passes **34 checks** (empty cart, unknown product, quantity limit, the
 browser's price ignored, 6,000₮ fee, free above 40,000₮, countryside with an aimag, bundle size price, shared bundle
 stock, district / khoroo / address, QPay accepted, transfer and unknown payments refused, phone, email, company
-registry, same checkout key → same reference, payment check 400 / 503). Without erxes the order returns
+registry, mystery box gift above 50,000₮ only with a gift pack, same checkout key → same reference, payment check
+400 / 503). Without erxes the order returns
 `503 not_configured`; the checkout then shows the phone number and keeps the cart. `--send` was **not run** (env vars
 not set). No payment was made.
 
@@ -140,7 +143,9 @@ Steps for the real test (authorized credentials only):
    should erxes use, and should Pocket / Sono be offered?
 2. **Countryside fee**: Zochil has one option (6,000₮). The site charges the same for countryside and says the car fare
    is not included. Is that right?
-3. **Mystery box** («50,000-с дээш … mystery box бэлгэнд очно»): still running? Who adds the gift to the order?
+3. **Mystery box** («50,000-с дээш … mystery box бэлгэнд очно»): still running? The site reads it as «an order with a
+   Тоди SOLO / DOUBLE pack and goods above 50,000₮» and notes it on the order. Is that the rule (or any order above
+   50,000₮)? How many boxes are left?
 4. **Free delivery threshold**: the rule says «40,000-с дээш»; the site uses goods total **above** 40,000₮ (exactly
    40,000₮ pays 6,000₮). Confirm.
 5. **Typo** on Flexa 993288: the text says «Өдөр 00 ширхэгтэй»; the title says 10 pieces.

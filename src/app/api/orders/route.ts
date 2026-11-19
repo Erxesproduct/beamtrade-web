@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   if (!result.ok) return NextResponse.json({ ok: false, error: "validation", errors: result.errors }, { status: 422 });
   const { order } = result;
   const reference = makeReference((body as { key?: unknown }).key);
-  const totals = { reference, subtotal: order.subtotal, deliveryFee: order.deliveryFee, total: order.total, method: order.payment };
+  const totals = { reference, subtotal: order.subtotal, deliveryFee: order.deliveryFee, total: order.total, gift: order.gift, method: order.payment };
 
   // Honeypot filled → pretend success, drop silently.
   if (order.website) return NextResponse.json({ ok: true, ...totals, payment: null });

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createHash } from "node:crypto";
-import { deliveryOption, paymentOption } from "@/content/business";
+import { business, deliveryOption, paymentOption } from "@/content/business";
 import { fullName, sku } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import { erxesGraphql, erxesUrl } from "@/lib/erxes";
@@ -63,6 +63,7 @@ export function summarize(order: Order, reference: string) {
   lines.push(`Барааны дүн: ${formatPrice(order.subtotal)}`);
   lines.push(`Хүргэлт: ${order.deliveryFee === 0 ? "үнэгүй" : formatPrice(order.deliveryFee)}`);
   lines.push(`Нийт: ${formatPrice(order.total)}`);
+  if (order.gift) lines.push(`Бэлэг: ${business.gift.name} хийж өгөх (${business.gift.rule})`);
   lines.push(`Төлбөр: ${paymentOption(order.payment).name} (100% урьдчилгаа)`);
   lines.push(`eBarimt: ${order.receipt.type === "company" ? `Байгууллага, РД ${order.receipt.regNo}` : `Хувь хүн (${order.phone})`}`);
   if (order.note) lines.push(`Тайлбар: ${order.note}`);
