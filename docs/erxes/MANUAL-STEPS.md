@@ -84,3 +84,27 @@ the server) and writes it on the order. The receipt is issued in erxes by staff 
 2. Register for **PosAPI 3.0** (ebarimt.mn) and install the PosAPI service.
 3. **Settings → eBarimt**: PosAPI URL, TIN, district code, VAT switches; assign it to the website pipeline.
 4. For every paid order: issue the receipt once (check the card first) and send the lottery number by SMS / email.
+
+## 1.4 Delivery zones, fees and order statuses
+
+Website (done), from Zochil shop 28509:
+
+| Option | Fee | Rule |
+| --- | --- | --- |
+| Улаанбаатар (Zochil «Бүсчлэл», id 1718) | 6,000₮, free when goods are above 40,000₮ | before 09:00 the same day, otherwise next day; no delivery on Sunday; district, khoroo 1–45, address |
+| Орон нутаг | same 6,000₮ (open question 2); the car fare is paid by the customer | aimag + soum / address + which car / bus to hand it to |
+
+- Zone limits (word for word from the shop): Баруун: Хуучин 22 товчоо, Тахилтын эцэс, Буман-Өлзий хороолол · Зүүн:
+  Хуучин Баянзүрхийн товчоо, Улиастай, Хужирбулан · Урд: Яармаг, Нүхт, Нисэхийн эцэс · Хойд: Зунжин, Бэлх плаза.
+  The website shows them; it cannot check an address against them, so staff confirm by phone.
+- The header and checkout show «Одоо захиалбал: Өнөөдөр / Маргааш / Даваа гарагт хүргэнэ» from the cut-off rule in
+  Ulaanbaatar time.
+- Fees and rules live in `src/content/business.ts`; change them there and in the erxes delivery products.
+
+erxes:
+
+1. Import `docs/erxes/beamtrade-delivery.csv` (`BT-DELIVERY-1718` Улаанбаатар 6,000₮, `BT-DELIVERY-1718-AIMAG`).
+2. **Sales → Boards → «Онлайн захиалга» → pipeline «Вэбсайт»**, stages (as on the website order page):
+   Хүлээгдэж байна → Баталгаажсан → Бэлтгэж байна → Хүргэлтэд гарсан → Хүргэгдсэн, plus Цуцлагдсан.
+3. **Frontline → Forms → (order form) → Settings**: create a sales card in «Хүлээгдэж байна» for every submission.
+   Staff move it to «Баталгаажсан» when the erxes invoice shows paid.
