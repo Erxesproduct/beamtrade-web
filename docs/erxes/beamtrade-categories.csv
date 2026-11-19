@@ -1,0 +1,9 @@
+﻿code,name,parent code
+BT,Beam trade,
+BT-DIAPERS,Хүүхдийн живх,BT
+BT-MAMA,Ээж ба нярай,BT
+BT-BUNDLES,Багц,BT
+BT-WOMEN,Эмэгтэй хэрэглэл,BT
+BT-WIPES,Салфетик,BT
+BT-PAPER,"Цаас, алчуур",BT
+BT-DELIVERY,Хүргэлт,BT
