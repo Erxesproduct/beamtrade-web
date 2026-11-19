@@ -51,3 +51,25 @@ Steps:
 4. **Inventories → Remainders**: enter real stock. For the bundle size rows decide whether erxes keeps one stock for
    the bundle (recommended: one product + a size note on the order) or one per size (open question 6).
 5. Photos: upload from `public/images/p/` (path in the CSV) if erxes should show them too.
+
+## 1.2 Payment (QPay)
+
+Zochil payment rule: **100% up front**; the FAQ says the delivery company cannot take cash. On Zochil `has_qpay` is on
+but the QPay2, Pocket and Sono methods all show `checkout_status: disabled` (open question 1). The website offers
+**QPay only**, through erxes.
+
+How the website uses erxes (erxes 3.0 source, `backend/plugins/payment_api`):
+
+- `generateInvoiceUrl` (public) creates the invoice after the order is saved in erxes; the customer pays on the erxes
+  payment page and returns to `/order/<reference>`. `invoicesCheck` (public) is asked every 5 s there.
+- No order is sent to QPay unless it was first recorded in erxes (no money asked for an order staff cannot see).
+
+Steps:
+
+1. Get Beam trade's QPay merchant credentials (`client_id`, `client_secret`, `invoice_code`); ask QPay / Zochil
+   whether the current merchant can be used outside Zochil.
+2. **Settings → Payments → Add → QPay (v2)**: enter them. Make a 100₮ test invoice in erxes.
+3. Copy the payment method's `_id` into Vercel as `ERXES_PAYMENT_IDS`. If Pocket / Sono are added in erxes later, add
+   their ids too: the erxes payment page then lets the customer choose.
+4. **Not yet tested**: nothing has been run against a real QPay merchant. Do not call payments working until step 2
+   and section 1.5 pass with authorized credentials.
