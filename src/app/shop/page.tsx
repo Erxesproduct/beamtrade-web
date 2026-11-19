@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Sky } from "@/components/deco";
-import { CloseIcon, ScaleIcon } from "@/components/icons";
+import { CloseIcon, GiftIcon, ScaleIcon } from "@/components/icons";
 import { ProductCard } from "@/components/product-card";
 import { Scroller } from "@/components/scroller";
 import { available, brandName, brands, byPopularity, fromPrice, groups, onSale, products, sizes, weightLabel, type Product } from "@/lib/catalog";
 
 type SP = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
-const KEYS = ["g", "z", "b", "q", "sale"] as const;
+const KEYS = ["g", "z", "b", "q", "sale", "gift"] as const;
 
 const SORTS = [
   ["popular", "Эрэлттэй"],
@@ -23,6 +23,7 @@ function titleOf(q: Record<string, string>) {
   if (q.b) return brandName(q.b);
   if (q.g) return groups.find((g) => g.id === q.g)?.name;
   if (q.sale) return "Хямдрал";
+  if (q.gift) return "Бэлэгтэй бараа";
   return null;
 }
 
@@ -45,6 +46,7 @@ export default async function Shop({ searchParams }: { searchParams: Promise<SP>
     (skip === "z" || !q.z || p.size === q.z) &&
     (skip === "b" || !q.b || p.brand === q.b) &&
     (!q.sale || onSale(p)) &&
+    (!q.gift || !!p.promo) &&
     (!q.q || norm(`${brandName(p.brand) ?? ""} ${p.title} ${p.size ?? ""} ${p.contents.join(" ")}`).includes(norm(q.q)));
 
   const list = products.filter((p) => match(p));
@@ -65,7 +67,7 @@ export default async function Shop({ searchParams }: { searchParams: Promise<SP>
   };
   const title = titleOf(q) ?? "Бүх бараа";
   const active = KEYS.filter((k) => q[k]);
-  const label = (k: string) => (k === "sale" ? "Хямдрал" : k === "q" ? `«${q.q}»` : titleOf({ [k]: q[k] }));
+  const label = (k: string) => (k === "sale" ? "Хямдрал" : k === "gift" ? "Бэлэгтэй" : k === "q" ? `«${q.q}»` : titleOf({ [k]: q[k] }));
   const has = (p: Product, key: string, id: string) => (key === "g" ? p.group === id : key === "z" ? p.size === id : p.brand === id);
 
   const row = (name: string, key: "g" | "z" | "b", items: { id: string; name: string; sub?: string | null }[]) => (
@@ -127,6 +129,11 @@ export default async function Shop({ searchParams }: { searchParams: Promise<SP>
               {name}
             </Link>
           ))}
+          {products.some((p) => p.promo) && (
+            <Link href={href({ gift: q.gift ? null : "1" })} aria-pressed={!!q.gift} className="chip" scroll={false}>
+              <GiftIcon size={16} /> Бэлэгтэй
+            </Link>
+          )}
           {products.some(onSale) && (
             <Link href={href({ sale: q.sale ? null : "1" })} aria-pressed={!!q.sale} className="chip" scroll={false}>
               Хямдралтай

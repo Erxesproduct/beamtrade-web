@@ -2,16 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { Cloud, Heart, Hearts, Sky } from "@/components/deco";
 import { EtaCard } from "@/components/delivery-eta";
-import { ArrowIcon, PhoneIcon, QrIcon, ScaleIcon, ShieldIcon, TruckIcon } from "@/components/icons";
+import { HeroSlides, type Slide } from "@/components/hero-slides";
+import { ArrowIcon, GiftIcon, PhoneIcon, QrIcon, ScaleIcon, ShieldIcon, TruckIcon } from "@/components/icons";
 import { ProductCard, TINT } from "@/components/product-card";
 import { Reveal } from "@/components/reveal";
 import { Scroller } from "@/components/scroller";
 import { SizeFinder } from "@/components/size-finder";
 import { business } from "@/content/business";
-import { available, banners, brands, getProduct, groups, popular, products, sizes } from "@/lib/catalog";
+import { available, banners, brands, groups, popular, products, sizes, weightLabel } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 
-const HERO = getProduct("todi-double-m-bagts") ?? popular[0];
+// every Тоди diaper pack, NB → XL, SOLO before DOUBLE: the hero photo changes through them by itself
+const ORDER = sizes.map((s) => s.id);
+const SLIDES: Slide[] = products
+  .filter((p) => p.group === "diapers" && p.size && p.images[0])
+  .sort((a, b) => ORDER.indexOf(a.size!) - ORDER.indexOf(b.size!) || (a.pack === "double" ? 1 : 0) - (b.pack === "double" ? 1 : 0))
+  .map((p) => ({ slug: p.slug, title: p.title, src: p.images[0].src, size: p.size!.toUpperCase(), kg: weightLabel(p.weight), price: p.variants[0].price, perPiece: p.perPiece, pieces: p.pieces, gift: !!p.promo }));
 
 const STEPS = [
   { icon: ScaleIcon, title: "Жингээ оруул", text: "Хүүхдийнхээ кг-г сонгоход тохирох хэмжээ гарч ирнэ.", color: "var(--color-sky)" },
@@ -22,6 +28,7 @@ const STEPS = [
 export default function Home() {
   const best = popular.filter((p) => available(p)).slice(0, 10);
   const bundles = products.filter((p) => p.group === "bundles");
+  const gifts = products.filter((p) => p.promo && available(p)).sort((a, b) => ORDER.indexOf(a.size ?? "") - ORDER.indexOf(b.size ?? "") || a.variants[0].price - b.variants[0].price);
   const city = business.delivery[0];
   const cover = (g: string) => popular.find((p) => p.group === g && p.images[0])?.images[0].thumb.src;
 
@@ -50,6 +57,11 @@ export default function Home() {
               </Link>
             </div>
             <ul className="rise mt-8 flex flex-wrap gap-2 text-[13.5px] font-bold" style={{ animationDelay: "320ms" }}>
+              <li>
+                <Link href="/shop?gift=1" className="gift-tag !py-1.5 !text-[13.5px]">
+                  <GiftIcon size={15} /> {formatPrice(business.gift.from)}+ бэлэгтэй
+                </Link>
+              </li>
               <li className="rounded-full bg-white/80 px-3 py-1.5">✓ ISO 9001:2015</li>
               <li className="rounded-full bg-white/80 px-3 py-1.5">✓ OEKO-TEX 100</li>
               <li className="rounded-full bg-white/80 px-3 py-1.5">✓ {formatPrice(city.freeFrom)}-өөс дээш хүргэлт үнэгүй</li>
@@ -57,14 +69,9 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto w-full max-w-[460px]">
-            <div className="absolute inset-[2%] rounded-full bg-white shadow-[0_40px_80px_-40px_rgb(31_155_224/0.7)]" aria-hidden />
             <Hearts />
-            {HERO.images[0] && (
-              <Link href={`/p/${HERO.slug}`} className="bob relative block aspect-square" aria-label={HERO.title}>
-                <Image src={HERO.images[0].src} alt={`Тоди ${HERO.title}`} fill priority sizes="(min-width: 1024px) 460px, 90vw" className="object-contain p-[16%] mix-blend-multiply" />
-              </Link>
-            )}
-            <div className="card absolute right-0 -bottom-4 left-0 mx-auto max-w-[340px] p-4 sm:-bottom-2">
+            <HeroSlides slides={SLIDES} />
+            <div className="card relative mx-auto mt-2 max-w-[340px] p-4">
               <EtaCard />
             </div>
           </div>
@@ -145,6 +152,48 @@ export default function Home() {
           </Scroller>
         </div>
       </section>
+
+      {/* GIFT: the shop's mystery box promo on the Тоди SOLO / DOUBLE packs */}
+      {gifts.length > 0 && (
+        <section className="wrap mt-14">
+          <Reveal className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#ff5a74] to-[#d81f3a] p-6 text-white md:p-10">
+            <Sky color="rgba(255,255,255,0.12)" />
+            <div className="relative grid items-center gap-6 md:grid-cols-[1fr_auto]">
+              <div>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[13.5px] font-bold text-[#d81f3a]">
+                  <GiftIcon size={15} /> Бэлэгтэй
+                </span>
+                <h2 className="display mt-3 text-[30px] leading-tight md:text-[40px]">
+                  <span className="whitespace-nowrap">{formatPrice(business.gift.from)}-өөс</span> дээш захиалгад <span className="text-sun">{business.gift.name}</span> бэлэг
+                </h2>
+                <p className="mt-2 max-w-xl text-white/90">
+                  Тоди SOLO, DOUBLE живхний багцтай захиалга {formatPrice(business.gift.from)}-өөс давбал бэлэгтэй. Сагсанд хэр дутуу байгааг тань бид тоолоод харуулна.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {gifts.map((p) => (
+                    <Link key={p.slug} href={`/p/${p.slug}`} className="rounded-full bg-white/15 px-3.5 py-2 text-[14px] font-bold backdrop-blur-sm transition hover:bg-white hover:text-[#d81f3a]">
+                      {p.title.replace(" багц", "")} · {formatPrice(p.variants[0].price)}
+                    </Link>
+                  ))}
+                </div>
+                <Link href="/shop?gift=1" className="btn btn-sun mt-6">
+                  Бэлэгтэй живх үзэх →
+                </Link>
+              </div>
+              <div className="relative mx-auto hidden h-[220px] w-[220px] md:block" aria-hidden>
+                <span className="absolute inset-0 rounded-full bg-white/15" />
+                <span className="jiggle absolute inset-[18%] grid place-items-center rounded-[34px] bg-sun text-[#d81f3a] shadow-[0_14px_0_#d9a908]" style={{ ["--r" as string]: "-6deg" }}>
+                  <GiftIcon size={92} />
+                </span>
+                <span className="beat absolute top-[8%] right-[10%] text-[28px]">✦</span>
+                <span className="beat absolute bottom-[12%] left-[6%] text-[20px]" style={{ animationDelay: "0.6s" }}>
+                  ✦
+                </span>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      )}
 
       {/* PROMO BANNERS from the shop */}
       {banners.length > 0 && (

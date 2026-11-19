@@ -6,7 +6,7 @@ import { business, ORDER_STATUSES } from "@/content/business";
 import { formatPrice } from "@/lib/format";
 import { localOrders, useLocalOrders } from "@/lib/local-orders";
 import { Cloud, Hearts } from "./deco";
-import { CheckIcon, ClockIcon, CloseIcon, PhoneIcon } from "./icons";
+import { CheckIcon, ClockIcon, CloseIcon, GiftIcon, PhoneIcon } from "./icons";
 
 const LABEL: Record<string, { title: string; text: string; tone: "ok" | "wait" | "bad" }> = {
   paid: { title: "Төлбөр төлөгдлөө", text: business.rules.delivery, tone: "ok" },
@@ -114,6 +114,14 @@ export function OrderStatus({ reference }: { reference: string }) {
           )}
           {checkError && <p className="mt-3 text-[13.5px] font-bold text-rose">{checkError}</p>}
 
+          {order.gift && (
+            <p className="pop-in mt-6 flex items-center gap-3 rounded-[20px] bg-[#e3263f] p-4 font-bold text-white">
+              <span className="beat grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-[#e3263f]">
+                <GiftIcon size={20} />
+              </span>
+              {business.gift.name} бэлэг таны захиалгад дагалдана.
+            </p>
+          )}
           <ul className="mt-8 space-y-2.5 text-[14.5px]">
             {order.lines.map((l) => (
               <li key={`${l.name}|${l.label}`} className="flex justify-between gap-4">

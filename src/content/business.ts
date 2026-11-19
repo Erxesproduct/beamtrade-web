@@ -52,7 +52,16 @@ export const business = {
     ebarimt: "И-баримтыг төлбөр баталгаажсаны дараа erxes-ээс албан ёсоор олгоно. Байгууллагаар авах бол 7 оронтой регистрийн дугаараа бичнэ үү.",
   },
   faq: shop.faq,
+  /**
+   * The shop's promo line on the Тоди SOLO / DOUBLE diaper packs, word for word: «50,000-с дээш үнийн дүнд mystery box
+   * бэлгэнд очно.» Read as: an order with one of those packs and goods above 50,000₮ gets the gift. The website only
+   * shows it and writes it on the order; staff add the box (open question 3).
+   */
+  gift: { from: 50000, name: "Mystery box", rule: "50,000-с дээш үнийн дүнд mystery box бэлгэнд очно." },
 } as const;
+
+/** Does an order get the mystery box? Needs a gift-promo product and goods above the line. */
+export const giftEarned = (subtotal: number, hasGiftItem: boolean) => hasGiftItem && subtotal > business.gift.from;
 
 export type DeliveryId = (typeof business.delivery)[number]["id"];
 export type PaymentId = (typeof business.payments)[number]["id"];

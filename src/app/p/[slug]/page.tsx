@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { BuyBox } from "@/components/buy-box";
 import { Hearts } from "@/components/deco";
 import { EtaLine } from "@/components/delivery-eta";
+import { GiftMeter, GiftTag } from "@/components/gift";
 import { CheckIcon, GiftIcon, QrIcon, ScaleIcon, TruckIcon } from "@/components/icons";
 import { ProductCard, TINT } from "@/components/product-card";
 import { Scroller } from "@/components/scroller";
@@ -79,6 +80,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <span className="absolute inset-[14%] rounded-full bg-white/75 blur-2xl" aria-hidden />
               <Hearts />
               {img && <Image src={img.src} alt={name} fill priority sizes="(min-width: 768px) 50vw, 100vw" className={`bob object-contain p-[10%] mix-blend-multiply ${available(p) ? "" : "opacity-50 grayscale"}`} />}
+              {p.promo && <GiftTag big className="absolute bottom-4 left-4" />}
               {size && (
                 <span className="absolute top-4 left-4 flex flex-col items-center rounded-[20px] bg-white px-4 py-2 shadow-[0_8px_20px_-10px_rgb(18_48_90/0.5)]">
                   <b className="display text-[34px] leading-none text-sky-2">{size.name}</b>
@@ -112,10 +114,20 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
 
             {p.promo && (
-              <p className="mt-4 flex items-start gap-3 rounded-[20px] bg-sun-2 px-4 py-3 text-[14.5px]">
-                <GiftIcon size={20} className="mt-0.5 shrink-0 text-[#b07c00]" />
-                <span>{p.promo}</span>
-              </p>
+              <div className="relative mt-4 overflow-hidden rounded-[24px] bg-gradient-to-br from-sun-2 to-rose-2 p-4 shadow-[0_0_0_2.5px_#ff8fa3]">
+                <div className="flex items-center gap-4">
+                  <span className="jiggle grid h-14 w-14 shrink-0 place-items-center rounded-[18px] bg-[#e3263f] text-white shadow-[0_5px_0_#a8152a]">
+                    <GiftIcon size={28} />
+                  </span>
+                  <span>
+                    <b className="display block text-[20px] leading-tight text-[#c01d34]">Бэлэгтэй бараа</b>
+                    <span className="text-[14.5px]">{p.promo}</span>
+                  </span>
+                </div>
+                <div className="mt-3">
+                  <GiftMeter mode="product" price={v.price} />
+                </div>
+              </div>
             )}
 
             <ul className="mt-4 grid gap-2 text-[14.5px]">

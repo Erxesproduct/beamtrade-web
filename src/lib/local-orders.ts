@@ -17,6 +17,8 @@ export type LocalOrder = {
   method?: string;
   invoiceId: string | null;
   payUrl: string | null;
+  /** the mystery box promo applies */
+  gift?: boolean;
   /** last known erxes invoice status */
   status: string | null;
 };

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { available, brandOf, onSale, weightLabel, type Product } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import { CardActions } from "./card-actions";
+import { GiftTag } from "./gift";
 
 /** Soft tint per group, so the grid reads at a glance: blue diapers, green mama, yellow bundles, pink women… */
 export const TINT: Record<string, string> = {
@@ -32,7 +33,8 @@ export function ProductCard({ p, priority = false }: { p: Product; priority?: bo
           </span>
         )}
         {!ok && <span className="display absolute right-3 bottom-3 rounded-full bg-white px-3 py-1 text-[13px]">Дууссан</span>}
-        {onSale(p) && ok && <span className="display absolute bottom-3 left-3 rounded-full bg-rose px-3 py-1 text-[13px] text-white">Хямдрал</span>}
+        {p.promo && ok && <GiftTag className="absolute bottom-3 left-3" />}
+        {onSale(p) && ok && !p.promo && <span className="display absolute bottom-3 left-3 rounded-full bg-rose px-3 py-1 text-[13px] text-white">Хямдрал</span>}
       </Link>
       <div className="flex flex-1 flex-col p-4">
         {brand && (

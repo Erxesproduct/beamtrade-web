@@ -13,7 +13,8 @@ import { AIMAGS, DISTRICTS } from "@/lib/orders/places";
 import type { OrderErrors } from "@/lib/orders/schema";
 import { Cloud } from "./deco";
 import { EtaLine } from "./delivery-eta";
-import { BagIcon, MinusIcon, PhoneIcon, PlusIcon, QrIcon, TrashIcon, TruckIcon } from "./icons";
+import { GiftMeter } from "./gift";
+import { BagIcon, GiftIcon, MinusIcon, PhoneIcon, PlusIcon, QrIcon, TrashIcon, TruckIcon } from "./icons";
 
 const KEY = "beamtrade.checkout-key";
 /** One idempotency key per checkout attempt, kept until the order goes through. */
@@ -47,7 +48,7 @@ export function Checkout() {
   const subtotal = cartSubtotal(items);
   const fee = deliveryFee(delivery, subtotal);
   const total = subtotal + fee;
-  const toFree = subtotal <= city.freeFrom ? city.freeFrom - subtotal + 1 : 0;
+  const toFree = subtotal <= city.freeFrom ? city.freeFrom - subtotal : -1;
   const progress = Math.min(100, Math.round((subtotal / (city.freeFrom + 1)) * 100));
 
   if (!lines.length)
@@ -108,6 +109,7 @@ export function Checkout() {
           total: json.total,
           lines: lines.map((l) => ({ name: l.v.b && !l.v.n.startsWith(l.v.b) ? `${l.v.b} ${l.v.n}` : l.v.n, label: l.v.z, qty: l.qty, total: l.v.p * l.qty })),
           method: "qpay",
+          gift: !!json.gift,
           invoiceId: json.payment?.invoiceId ?? null,
           payUrl: json.payment?.url ?? null,
           status: json.payment ? "pending" : null,
@@ -156,17 +158,20 @@ export function Checkout() {
           <div className="rounded-[20px] bg-mist p-4">
             <p className="flex items-center gap-2 text-[14.5px] font-bold">
               <TruckIcon size={18} className="text-sky-2" />
-              {toFree > 0 ? (
+              {toFree >= 0 ? (
                 <span>
-                  Дахиад <b className="text-sky-2">{formatPrice(toFree)}</b>-ийн бараа нэмбэл хүргэлт үнэгүй
+                  Дахиад <b className="text-sky-2">{formatPrice(toFree)}</b>-өөс илүү бараа нэмбэл хүргэлт үнэгүй
                 </span>
               ) : (
                 <span className="text-leaf-2">Хүргэлт үнэгүй боллоо!</span>
               )}
             </p>
             <div className="mt-2.5 h-3 overflow-hidden rounded-full bg-white" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="Үнэгүй хүргэлт хүртэл">
-              <div className={`h-full rounded-full transition-[width] duration-700 ${toFree ? "bg-sky" : "bg-leaf"}`} style={{ width: `${progress}%` }} />
+              <div className={`h-full rounded-full transition-[width] duration-700 ${toFree >= 0 ? "bg-sky" : "bg-leaf"}`} style={{ width: `${progress}%` }} />
             </div>
+          </div>
+          <div className="mt-3">
+            <GiftMeter mode="cart" />
           </div>
           <ul className="mt-4 divide-y divide-line">
             {lines.map(({ id, qty, v }) => (
@@ -175,7 +180,14 @@ export function Checkout() {
                   {v.t && <Image src={v.t} alt="" fill sizes="96px" className="object-contain p-2 mix-blend-multiply" />}
                 </Link>
                 <div className="flex min-w-0 flex-1 flex-col">
-                  {v.b && <span className="eyebrow !text-[11px]">{v.b}</span>}
+                  <span className="flex flex-wrap items-center gap-2">
+                    {v.b && <span className="eyebrow !text-[11px]">{v.b}</span>}
+                    {v.f ? (
+                      <span className="gift-tag !px-2 !py-0.5 !text-[11px]">
+                        <GiftIcon size={12} /> Бэлэгтэй
+                      </span>
+                    ) : null}
+                  </span>
                   <Link href={`/p/${v.s}`} className="line-clamp-2 leading-snug font-bold hover:text-sky-2">
                     {v.n}
                   </Link>
