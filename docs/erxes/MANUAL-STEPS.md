@@ -108,3 +108,43 @@ erxes:
    Хүлээгдэж байна → Баталгаажсан → Бэлтгэж байна → Хүргэлтэд гарсан → Хүргэгдсэн, plus Цуцлагдсан.
 3. **Frontline → Forms → (order form) → Settings**: create a sales card in «Хүлээгдэж байна» for every submission.
    Staff move it to «Баталгаажсан» when the erxes invoice shows paid.
+
+## 1.5 Test order from cart to receipt
+
+**Verified on a local production build:** `npm run test:order -- http://127.0.0.1:3471` passes **31 checks** (empty cart, unknown product, quantity limit, the
+browser's price ignored, 6,000₮ fee, free above 40,000₮, countryside with an aimag, bundle size price, shared bundle
+stock, district / khoroo / address, QPay accepted, transfer and unknown payments refused, phone, email, company
+registry, same checkout key → same reference, payment check 400 / 503). Without erxes the order returns
+`503 not_configured`; the checkout then shows the phone number and keeps the cart. `--send` was **not run** (env vars
+not set). No payment was made.
+
+Steps for the real test (authorized credentials only):
+
+1. **Frontline → Forms → Create** «Вэбсайт захиалга» with fields Нэр, Утас, Имэйл, Захиалга; copy the form id and the
+   field ids into `ERXES_ORDER_FORM_ID` / `ERXES_ORDER_FIELD_IDS`. Set `ERXES_API_URL`, `ERXES_PAYMENT_IDS`. Redeploy.
+2. `npm run test:order -- https://<production url> --send`: one order, two items + delivery.
+3. Pay the invoice only with QPay's test merchant or with explicit authorization for a real charge; check that
+   `/order/<reference>` shows «Төлбөр төлөгдлөө», move the card, issue the eBarimt, mark delivered, void the test.
+
+## Permissions (erxes)
+
+- Staff who handle orders: Sales (cards), Forms (submissions), Payments (view invoices), eBarimt (issue).
+- Only the owner: Settings → Payments, Settings → eBarimt, product import.
+- The website uses only public erxes mutations; it needs no admin token.
+
+---
+
+## Open questions for Beam trade
+
+1. **Payment methods**: on Zochil QPay2, Pocket and Sono are all `disabled` while `has_qpay` is on. Which QPay merchant
+   should erxes use, and should Pocket / Sono be offered?
+2. **Countryside fee**: Zochil has one option (6,000₮). The site charges the same for countryside and says the car fare
+   is not included. Is that right?
+3. **Mystery box** («50,000-с дээш … mystery box бэлгэнд очно»): still running? Who adds the gift to the order?
+4. **Free delivery threshold**: the rule says «40,000-с дээш»; the site uses goods total **above** 40,000₮ (exactly
+   40,000₮ pays 6,000₮). Confirm.
+5. **Typo** on Flexa 993288: the text says «Өдөр 00 ширхэгтэй»; the title says 10 pieces.
+6. **Bundle sizes** share one stock on Zochil: keep it that way in erxes?
+7. **TIN / PosAPI** for eBarimt; the Zochil shop has no registry number.
+8. **Address**: no opening hours are given; is pickup possible?
+9. **Domain**: point beamtrade.mn at the new site when ready.
