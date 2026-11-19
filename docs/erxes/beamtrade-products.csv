@@ -1,0 +1,49 @@
+﻿code,name,category code,type,unit price,price before sale,brand,diaper size,baby weight kg,pieces,price per piece,stock (Zochil),stock shared with,zochil product id,image (website path)
+BT-993291,Flexa шөнийн ариун цэврийн хэрэглэл 8 ширхэг,BT-WOMEN,product,3000,,Flexa,,,,,29,,993291,/images/p/993291-1.webp
+BT-993288,Flexa өдрийн ариун цэврийн хэрэглэл 10 ширхэг,BT-WOMEN,product,3000,,Flexa,,,,,27,,993288,/images/p/993288-1.webp
+BT-986052,Өд Гэр ахуйн багц,BT-BUNDLES,product,48900,,Өд,,,,,27,,986052,/images/p/986052-1.webp
+BT-986049-s,Тоди Бүрэн багц Живх S (3–6 кг),BT-BUNDLES,product,149900,,Тоди,S,,,,29,BT-986049-m BT-986049-l BT-986049-xl,986049,/images/p/986049-1.webp
+BT-986049-m,Тоди Бүрэн багц Живх M (5–10 кг),BT-BUNDLES,product,149900,,Тоди,M,,,,29,BT-986049-s BT-986049-l BT-986049-xl,986049,/images/p/986049-1.webp
+BT-986049-l,Тоди Бүрэн багц Живх L (9–14 кг),BT-BUNDLES,product,149900,,Тоди,L,,,,29,BT-986049-s BT-986049-m BT-986049-xl,986049,/images/p/986049-1.webp
+BT-986049-xl,Тоди Бүрэн багц Живх XL (15+ кг),BT-BUNDLES,product,149900,,Тоди,XL,,,,29,BT-986049-s BT-986049-m BT-986049-l,986049,/images/p/986049-1.webp
+BT-986047-s,Тоди Ээжийн багц Живх S (3–6 кг),BT-BUNDLES,product,119900,,Тоди,S,,,,31,BT-986047-m BT-986047-l BT-986047-xl,986047,/images/p/986047-1.webp
+BT-986047-m,Тоди Ээжийн багц Живх M (5–10 кг),BT-BUNDLES,product,119900,,Тоди,M,,,,31,BT-986047-s BT-986047-l BT-986047-xl,986047,/images/p/986047-1.webp
+BT-986047-l,Тоди Ээжийн багц Живх L (9–14 кг),BT-BUNDLES,product,119900,,Тоди,L,,,,31,BT-986047-s BT-986047-m BT-986047-xl,986047,/images/p/986047-1.webp
+BT-986047-xl,Тоди Ээжийн багц Живх XL (15+ кг),BT-BUNDLES,product,119900,,Тоди,XL,,,,31,BT-986047-s BT-986047-m BT-986047-l,986047,/images/p/986047-1.webp
+BT-986045-s,Тоди Нярайн багц Живх S (3–6 кг),BT-BUNDLES,product,79900,,Тоди,S,,,,26,BT-986045-m BT-986045-l BT-986045-xl,986045,/images/p/986045-1.webp
+BT-986045-m,Тоди Нярайн багц Живх M (5–10 кг),BT-BUNDLES,product,79900,,Тоди,M,,,,26,BT-986045-s BT-986045-l BT-986045-xl,986045,/images/p/986045-1.webp
+BT-986045-l,Тоди Нярайн багц Живх L (9–14 кг),BT-BUNDLES,product,79900,,Тоди,L,,,,26,BT-986045-s BT-986045-m BT-986045-xl,986045,/images/p/986045-1.webp
+BT-986045-xl,Тоди Нярайн багц Живх XL (15+ кг),BT-BUNDLES,product,79900,,Тоди,XL,,,,26,BT-986045-s BT-986045-m BT-986045-l,986045,/images/p/986045-1.webp
+BT-981881,Flexa өдөр тутам 20 ширхэг,BT-WOMEN,product,2400,,Flexa,,,,,29,,981881,/images/p/981881-1.webp
+BT-981877,Flexa өдрийн ариун цэврийн хэрэглэл 20 ширхэг,BT-WOMEN,product,6000,,Flexa,,,,,29,,981877,/images/p/981877-1.webp
+BT-981876,Flexa шөнийн ариун цэврийн хэрэглэл 16 ширхэг,BT-WOMEN,product,6000,,Flexa,,,,,28,,981876,/images/p/981876-1.webp
+BT-981873,Хатад өдөр тутам 20 ширхэг,BT-WOMEN,product,2400,,Хатад,,,,,26,,981873,/images/p/981873-1.webp
+BT-981850,Хатад шөнийн ариун цэврийн хэрэглэл 8 ширхэг,BT-WOMEN,product,2400,,Хатад,,,,,17,,981850,/images/p/981850-1.webp
+BT-981753,Хатад өдрийн ариун цэврийн хэрэглэл 10 ширхэг,BT-WOMEN,product,2400,,Хатад,,,,,36,,981753,/images/p/981753-1.webp
+BT-957080,Өд нэг удаагийн нүүрний алчуур 160ш,BT-PAPER,product,10500,,Өд,,,,,25,,957080,/images/p/957080-1.webp
+BT-957071,Өд гал тогооны угаадаг алчуур 50ш,BT-PAPER,product,5500,,Өд,,,,,24,,957071,/images/p/957071-1.webp
+BT-907460,Тоди хүүхдийн нойтон салфетик 100ш,BT-WIPES,product,5500,,Тоди,,,,,18,,907460,/images/p/907460-1.webp
+BT-907459,Тоди хүүхдийн нойтон салфетик 50ш,BT-WIPES,product,3500,,Тоди,,,,,26,,907459,/images/p/907459-1.webp
+BT-907456,Өд нойтон салфетик 120ш,BT-WIPES,product,5400,,Өд,,,,,23,,907456,/images/p/907456-1.webp
+BT-907453,Өд нойтон салфетик 60ш,BT-WIPES,product,3050,,Өд,,,,,28,,907453,/images/p/907453-1.webp
+BT-907448,Өд нойтон салфетик 10ш,BT-WIPES,product,5500,,Өд,,,,,27,,907448,/images/p/907448-1.webp
+BT-907427,Тоди Хөхүүл дэр,BT-MAMA,product,63500,,Тоди,,,,,28,,907427,/images/p/907427-1.webp
+BT-907426,Тоди Нярайн дэр,BT-MAMA,product,27500,,Тоди,,,,,28,,907426,/images/p/907426-1.webp
+BT-907423,Тоди Сүү хадгалах уут,BT-MAMA,product,10000,,Тоди,,,,,27,,907423,/images/p/907423-1.webp
+BT-907421,Тоди Хөхний сүү шингээгч,BT-MAMA,product,7200,,Тоди,,,,,28,,907421,/images/p/907421-1.webp
+BT-907419,Тоди Чихний наалт,BT-MAMA,product,5000,,Тоди,,,,,24,,907419,/images/p/907419-1.webp
+BT-795658,Тоди DOUBLE XL багц,BT-DIAPERS,product,77000,,Тоди,XL,15-+,108,713,24,,795658,/images/p/795658-1.webp
+BT-795655,Тоди DOUBLE L багц,BT-DIAPERS,product,77000,,Тоди,L,9-14,116,664,28,,795655,/images/p/795655-1.webp
+BT-795646,Тоди DOUBLE M багц,BT-DIAPERS,product,77000,,Тоди,M,5-10,124,621,30,,795646,/images/p/795646-1.webp
+BT-795644,Тоди DOUBLE S багц,BT-DIAPERS,product,77000,,Тоди,S,3-6,136,566,29,,795644,/images/p/795644-1.webp
+BT-795636,Тоди SOLO XL багц,BT-DIAPERS,product,38500,,Тоди,XL,15-+,54,713,167,,795636,/images/p/795636-1.webp
+BT-795635,Тоди SOLO L багц,BT-DIAPERS,product,38500,,Тоди,L,9-14,58,664,92,,795635,/images/p/795635-1.webp
+BT-795633,Тоди SOLO M багц,BT-DIAPERS,product,38500,,Тоди,M,5-10,62,621,68,,795633,/images/p/795633-1.webp
+BT-795624,Тоди SOLO S багц,BT-DIAPERS,product,38500,,Тоди,S,3-6,68,566,84,,795624,/images/p/795624-1.webp
+BT-721234,Тоди NB живх,BT-DIAPERS,product,12600,,Тоди,NB,2-4,28,450,49,,721234,/images/p/721234-1.webp
+BT-703004,Өд ариун цэврийн цаас 24ш,BT-PAPER,product,28800,,Өд,,,,,25,,703004,/images/p/703004-1.webp
+BT-703002,Өд ариун цэврийн цаас 16ш,BT-PAPER,product,19200,,Өд,,,,,30,,703002,/images/p/703002-1.webp
+BT-703001,Өд ариун цэврийн цаас 10ш,BT-PAPER,product,12000,,Өд,,,,,29,,703001,/images/p/703001-1.webp
+BT-703000,Өд ариун цэврийн цаас 4ш,BT-PAPER,product,4800,,Өд,,,,,27,,703000,/images/p/703000-1.webp
+BT-702999,CUCU Cucu угаадаг салфетка,BT-WIPES,product,6000,,CUCU,,,,,99,,702999,/images/p/702999-1.webp
+BT-702998,CUCU Cucu 10ш хуурай салфетка,BT-WIPES,product,400,,CUCU,,,,,25,,702998,/images/p/702998-1.webp
